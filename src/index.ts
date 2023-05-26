@@ -42,22 +42,17 @@ class TodoList {
   }
 
   // 수정
-  updateTodo(todoList: TodoList, changedTodo: Todo) {
-    console.log(1);
-
-    // 초기화
-    let newTodo = changedTodo;
-    let newTodoList = new TodoList([])._todos;
+  updateTodo(changedTodo: Todo) {
+    let newTodos = new TodoList([])._todos;
     for (let i = 0; i < todoList.getLength(); i++) {
       if (todoList._todos[i].seq === changedTodo.seq) {
-        newTodoList.push(changedTodo);
+        newTodos.push(changedTodo);
       } else {
-        newTodoList.push(todoList._todos[i]);
+        newTodos.push(todoList._todos[i]);
       }
-      // TODO 로컬스토리지 기능 분리
-      const jsonTodo = JSON.stringify(newTodoList);
-      localStorage.setItem("Todos", jsonTodo);
     }
+    // 변경된 리스트로 대체
+    todoList = new TodoList(newTodos);
   }
   // 길이
   getLength() {
@@ -66,6 +61,13 @@ class TodoList {
   }
 }
 
+const getStore = () => {
+  const jsonTodos = localStorage.getItem("Todos");
+  if (jsonTodos !== null) {
+    const todosArr = JSON.parse(jsonTodos);
+    todoList = new TodoList(todosArr);
+  }
+};
 const setStore = () => {
   const jsonTodos = JSON.stringify(todoList.todos);
   localStorage.setItem("Todos", jsonTodos);
@@ -131,21 +133,19 @@ const save = (event: KeyboardEvent, value: string) => {
   }
 };
 
+// 체크박스이벤트
 const check = (todo: Todo) => {
+  // 체크 스타일 적용
   const checkedLi = document.querySelector(`#todo-item-${todo.seq}`);
   if (checkedLi?.classList.contains("checked")) {
     checkedLi?.classList.remove("checked");
   } else {
     checkedLi?.classList.add("checked");
   }
-  const todosStr = localStorage.getItem("Todos");
-  if (todosStr !== null) {
-    const todosArr = JSON.parse(todosStr);
-    todoList = new TodoList(todosArr);
-
-    let changedTodo = new Todo(!todo.checked, todo.content, todo.seq);
-    todoList.updateTodo(todoList, changedTodo);
-  }
+  // 변경사항 적용
+  let changedTodo = new Todo(!todo.checked, todo.content, todo.seq);
+  todoList.updateTodo(changedTodo);
+  setStore();
 };
 
 // 화면 초기화
