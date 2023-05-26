@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>TODO LIST</title>
+</head>
+<body>
+    <div class="todo-wrapper">
+        <div class="todo-title">todos</div>
+        <div class="todo-box">
+            <div class="todo-input-box">
+                <button class="complete-all-btn">✔</button>
+                <input type="text" class="todo-input" id="todo-input" placeholder="할 일을 입력 후 엔터" onkeypress="save(event, this.value)">
+            </div>
+            
+            <ul class="todo-list">
+               <!-- <li class="todo-item" id="todo-item">
+                    <div class="checkbox" id="checked">✔</div>
+                    <div class="todo" id="content"></div>
+                    <input type=hidden id="seq"/>
+                    <button class="delBtn" id="deleted">x</button>
+                </li>
+                -->
+            </ul>
+        </div>  
+    </div>
+    <script src="./../build/index.js"></script>
+</body>
+</html>
