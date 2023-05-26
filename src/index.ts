@@ -1,3 +1,5 @@
+import { todo } from "node:test";
+
 // 조회
 interface Item {
   seq: string;
@@ -19,6 +21,7 @@ class Todo implements Item {
   }
 }
 
+// TODO 캡슐라이제이션
 class TodoList {
   private _todos: Todo[]; // private 변수는 관례로 '_'언더바를 붙인다.
   constructor(public todoList: Todo[]) {
@@ -36,9 +39,6 @@ class TodoList {
   addTodo(content: string) {
     const newTodo = new Todo(false, content);
     this._todos.push(newTodo);
-    const jsonTodo = JSON.stringify(this._todos);
-    localStorage.setItem("Todos", jsonTodo);
-    console.log(this._todos);
   }
 
   // 수정
@@ -54,6 +54,7 @@ class TodoList {
       } else {
         newTodoList.push(todoList._todos[i]);
       }
+      // TODO 로컬스토리지 기능 분리
       const jsonTodo = JSON.stringify(newTodoList);
       localStorage.setItem("Todos", jsonTodo);
     }
@@ -64,6 +65,11 @@ class TodoList {
     return this._todos.length;
   }
 }
+
+const setStore = () => {
+  const jsonTodos = JSON.stringify(todoList.todos);
+  localStorage.setItem("Todos", jsonTodos);
+};
 
 const ul = document.querySelector("ul");
 const drawLi = (todo: Todo, i: number) => {
@@ -118,9 +124,8 @@ const clear = () => {
 // 저장이벤트
 const save = (event: KeyboardEvent, value: string) => {
   if (event.key === "Enter") {
-    console.log(typeof value);
     todoList.addTodo(value);
-    // TODO 로컬스토리지 등록
+    setStore();
     drawLi(new Todo(false, value), todoList.getLength());
     clear();
   }
