@@ -1,4 +1,4 @@
-import { Todo } from "./Todo";
+import { Todo } from "./Todo.js";
 
 // TODO 캡슐라이제이션
 export class TodoList {

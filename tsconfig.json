@@ -2,12 +2,12 @@
     "include": ["src"],
     "compilerOptions": {
         "outDir": "build",
-        "target": "ES6", // 자바스트립트 목표 버전
-        "lib": ["ES6", "DOM"], // 컴파일에 사용될 라이브러리 파일 
+        "target": "ES2020", // 자바스트립트 목표 버전
+        "lib": ["ES2020", "DOM"], // 컴파일에 사용될 라이브러리 파일 
         "strict": true, // 모든 엄격한 유형 검사 옵션 활성화
         "allowJs": true, // 자바스크립트 파일 컴파일 허용
-        "esModuleInterop": true, // 모든 가져오기에 대한 네임스페이스 객체 생성을 통해 CommonJS와 ES 모듈 간의 상호 운용성을 제공. 'allowSyntheticDefaultImports' 암시
-        "module": "UMD", // 생성될 모듈코드 설정: 브라우저앱을 위해선 UMD, nodejs를 위해선 CommonJS
+        // "esModuleInterop": true, // 모든 가져오기에 대한 네임스페이스 객체 생성을 통해 CommonJS와 ES 모듈 간의 상호 운용성을 제공. 'allowSyntheticDefaultImports' 암시
+        "module": "ES2020", // 생성될 모듈코드 설정: 브라우저앱을 위해선 UMD, nodejs를 위해선 CommonJS
         "watch": true
     }
 }

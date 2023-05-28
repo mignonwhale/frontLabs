@@ -1,5 +1,5 @@
-import { Todo } from "./Todo";
-import { TodoList } from "./TodoList";
+import { Todo } from "./Todo.js";
+import { TodoList } from "./TodoList.js";
 
 const getStore = () => {
   const jsonTodos = localStorage.getItem("Todos");
@@ -77,10 +77,12 @@ const clearInput = () => {
 };
 
 // 저장이벤트
-const save = (event: KeyboardEvent, value: string) => {
+const save = (event: KeyboardEvent) => {
+  const temp = <HTMLInputElement>event.target;
+
   if (event.key === "Enter") {
     const todoList = getTodoListAdapter();
-    todoList.addTodo(value);
+    todoList.addTodo(temp.value);
     setStore(todoList.todos);
     drawInit(todoList);
     clearInput();
@@ -120,6 +122,22 @@ const delTodo = (todo: Todo, i: number) => {
   drawInit(todoList);
 };
 
+// 전역변수를 덜 쓰기 위한 중간자 역할
+function setStoreAdapter() {
+  setStore(todoList.todos);
+}
+// 전역변수를 덜 쓰기 위한 중간자 역할
+function getTodoListAdapter() {
+  return todoList;
+}
+
+function attachEventHandler() {
+  // onkeypress="save(event, this.value)"
+  const input = document.querySelector("#todo-input");
+  input?.addEventListener("keydown", (event) => {
+    save(<KeyboardEvent>event);
+  });
+}
 // 화면 초기화
 let todoList: TodoList;
 const todosArr = getStore();
@@ -130,12 +148,4 @@ if (todosArr !== null) {
 } else {
   todoList = new TodoList([]);
 }
-
-// 전역변수를 덜 쓰기 위한 중간자 역할
-function setStoreAdapter() {
-  setStore(todoList.todos);
-}
-// 전역변수를 덜 쓰기 위한 중간자 역할
-function getTodoListAdapter() {
-  return todoList;
-}
+attachEventHandler();
