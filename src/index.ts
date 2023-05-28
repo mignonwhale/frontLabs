@@ -1,60 +1,5 @@
-// 조회
-interface Item {
-  seq: string;
-  checked: boolean;
-  content: string;
-}
-
-class Todo implements Item {
-  public seq: string;
-  constructor(public checked: boolean, public content: string, seq?: string) {
-    if (!seq) {
-      this.seq = this.getSeq();
-    } else {
-      this.seq = seq;
-    }
-  }
-  private getSeq(): string {
-    return `${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDate()}${new Date().getHours()}${new Date().getMinutes()}${new Date().getSeconds()}${new Date().getMilliseconds()}`;
-  }
-}
-
-// TODO 캡슐라이제이션
-class TodoList {
-  private _todos: Todo[]; // private 변수는 관례로 '_'언더바를 붙인다.
-  constructor(public todoList: Todo[]) {
-    this._todos = todoList;
-  }
-
-  // 조회
-  get todos() {
-    // todos라는 프로퍼티를 getter로 만들어 사용 할 수 있다.
-    // private _todos 프로퍼티는 외부에서 직접 접근이 안되므로 우회 접근 방법으로 getter를 만들어 준다.
-    return [...this._todos];
-  }
-
-  // 등록
-  addTodo(content: string) {
-    const newTodo = new Todo(false, content);
-    this._todos.push(newTodo);
-  }
-
-  // 삭제
-  deleteTodo(seq: string) {
-    for (let i = 0; i < this._todos.length; i++) {
-      const ele = this._todos[i];
-      if (ele.seq === seq) {
-        this._todos.splice(i, 1);
-      }
-    }
-  }
-
-  // 길이
-  getLength() {
-    // getter, setter 대신 메소드로도 사용 가능
-    return this._todos.length;
-  }
-}
+import { Todo } from "./Todo";
+import { TodoList } from "./TodoList";
 
 const getStore = () => {
   const jsonTodos = localStorage.getItem("Todos");
@@ -168,11 +113,7 @@ const delTodo = (todo: Todo, i: number) => {
   // button.textContent = "x";
   // 데이터 = ele 삭제
   const todoList = getTodoListAdapter();
-  console.log("테수누:", todoList === todoList);
-
   todoList.deleteTodo(todo.seq);
-  console.log("테수누:", todoList === todoList);
-
   setStoreAdapter();
 
   // 화면 반영
