@@ -39,19 +39,6 @@ class TodoList {
     this._todos.push(newTodo);
   }
 
-  // 수정
-  updateTodo(changedTodo: Todo) {
-    let newTodos = new TodoList([])._todos;
-    for (let i = 0; i < this.getLength(); i++) {
-      if (this._todos[i].seq === changedTodo.seq) {
-        newTodos.push(changedTodo);
-      } else {
-        newTodos.push(this._todos[i]);
-      }
-    }
-    // 변경된 리스트로 대체
-    this._todos = newTodos;
-  }
   // 길이
   getLength() {
     // getter, setter 대신 메소드로도 사용 가능
@@ -74,19 +61,6 @@ const setStore = (todos: Todo[]) => {
 
 const drawLi = (todo: Todo, i: number) => {
   let div1 = document.createElement("div");
-  let div2 = document.createElement("div");
-  let inputHidden = document.createElement("input");
-  let button = document.createElement("button");
-  let li = document.createElement("li");
-  const ul = document.querySelector("ul");
-
-  const checkedDiv = document.querySelector(`#checked-${i}`);
-  if (checkedDiv) {
-    // 수정임
-    checkedDiv.textContent = todo.checked ? "✔" : "";
-    return;
-  }
-
   div1.classList.add("checkbox");
   div1.id = `checked-${i}`;
   div1.textContent = todo.checked ? "✔" : "";
@@ -95,18 +69,22 @@ const drawLi = (todo: Todo, i: number) => {
     check(todo, i);
   };
 
+  let div2 = document.createElement("div");
   div2.classList.add("todo");
   div2.id = `content-${i}`;
   div2.textContent = todo.content;
 
+  let inputHidden = document.createElement("input");
   inputHidden.type = "hidden";
   inputHidden.id = `seq`;
   inputHidden.value = todo.seq;
 
+  let button = document.createElement("button");
   button.classList.add("delBtn");
   button.id = `deleted-${i}`;
   button.textContent = "x";
 
+  let li = document.createElement("li");
   li.classList.add("todo-item");
   todo.checked ? li.classList.add("checked") : li.classList.remove("checked");
   li.id = `todo-item-${i}`;
@@ -115,8 +93,11 @@ const drawLi = (todo: Todo, i: number) => {
   li.append(div2);
   li.append(inputHidden);
   li.append(button);
+
+  const ul = document.querySelector("ul");
   ul?.appendChild(li);
 };
+
 const drawInit = (todoList: TodoList) => {
   for (let i = 0; i < todoList.getLength(); i++) {
     let todo = todoList.todos[i];
@@ -145,6 +126,9 @@ const save = (event: KeyboardEvent, value: string) => {
 
 // 체크박스이벤트
 const check = (todo: Todo, i: number) => {
+  // 변경사항 적용
+  todo.checked = !todo.checked;
+
   // 체크 스타일 적용
   const checkedLi = document.querySelector(`#todo-item-${i}`);
   if (checkedLi?.classList.contains("checked")) {
@@ -152,16 +136,12 @@ const check = (todo: Todo, i: number) => {
   } else {
     checkedLi?.classList.add("checked");
   }
-  // 변경사항 적용
-  todo.checked = !todo.checked;
+  const checkedDiv = document.querySelector(`#checked-${i}`);
+  if (checkedDiv !== null) {
+    checkedDiv.textContent = todo.checked ? "✔" : "";
+  }
 
-  // let changedTodo = new Todo(!todo.checked, todo.content, todo.seq);
-  // todoList.updateTodo(changedTodo);
   setStoreAdapter();
-
-  // console.log("여기", i);
-
-  // drawLi(changedTodo, i);
 };
 
 // 화면 초기화
