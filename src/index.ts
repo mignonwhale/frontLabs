@@ -39,6 +39,16 @@ class TodoList {
     this._todos.push(newTodo);
   }
 
+  // 삭제
+  deleteTodo(seq: string) {
+    for (let i = 0; i < this._todos.length; i++) {
+      const ele = this._todos[i];
+      if (ele.seq === seq) {
+        this._todos.splice(i, 1);
+      }
+    }
+  }
+
   // 길이
   getLength() {
     // getter, setter 대신 메소드로도 사용 가능
@@ -83,6 +93,9 @@ const drawLi = (todo: Todo, i: number) => {
   button.classList.add("delBtn");
   button.id = `deleted-${i}`;
   button.textContent = "x";
+  button.onclick = () => {
+    delTodo(todo, i);
+  };
 
   let li = document.createElement("li");
   li.classList.add("todo-item");
@@ -99,13 +112,19 @@ const drawLi = (todo: Todo, i: number) => {
 };
 
 const drawInit = (todoList: TodoList) => {
+  // 초기화
+  const ul = document.querySelector(`ul`);
+  if (ul !== null) {
+    ul.innerHTML = "";
+  }
+  // 그리기
   for (let i = 0; i < todoList.getLength(); i++) {
     let todo = todoList.todos[i];
     drawLi(todo, i);
   }
 };
 // 입력란 초기화
-const clear = () => {
+const clearInput = () => {
   let input: HTMLInputElement | null = document.querySelector("#todo-input");
   if (input !== null) {
     input.value = "";
@@ -118,9 +137,8 @@ const save = (event: KeyboardEvent, value: string) => {
     const todoList = getTodoListAdapter();
     todoList.addTodo(value);
     setStore(todoList.todos);
-
-    drawLi(new Todo(false, value), todoList.getLength());
-    clear();
+    drawInit(todoList);
+    clearInput();
   }
 };
 
@@ -144,6 +162,23 @@ const check = (todo: Todo, i: number) => {
   setStoreAdapter();
 };
 
+// 삭제이벤트
+const delTodo = (todo: Todo, i: number) => {
+  // let button = document.querySelector(`#deleted-${i}`);
+  // button.textContent = "x";
+  // 데이터 = ele 삭제
+  const todoList = getTodoListAdapter();
+  console.log("테수누:", todoList === todoList);
+
+  todoList.deleteTodo(todo.seq);
+  console.log("테수누:", todoList === todoList);
+
+  setStoreAdapter();
+
+  // 화면 반영
+  drawInit(todoList);
+};
+
 // 화면 초기화
 let todoList: TodoList;
 const todosArr = getStore();
@@ -155,9 +190,11 @@ if (todosArr !== null) {
   todoList = new TodoList([]);
 }
 
+// 전역변수를 덜 쓰기 위한 중간자 역할
 function setStoreAdapter() {
   setStore(todoList.todos);
 }
+// 전역변수를 덜 쓰기 위한 중간자 역할
 function getTodoListAdapter() {
   return todoList;
 }

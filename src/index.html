@@ -12,11 +12,10 @@
         <div class="todo-title">todos</div>
         <div class="todo-box">
             <div class="todo-input-box">
-                <button class="complete-all-btn">✔</button>
                 <input type="text" class="todo-input" id="todo-input" placeholder="할 일을 입력 후 엔터" onkeypress="save(event, this.value)">
             </div>
             
-            <ul class="todo-list">
+            <ul class="todo-list" id="todo-list">
                <!-- <li class="todo-item" id="todo-item">
                     <div class="checkbox" id="checked">✔</div>
                     <div class="todo" id="content"></div>
