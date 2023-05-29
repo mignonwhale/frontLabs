@@ -25,16 +25,19 @@ const drawLi = (todo: Todo, i: number) => {
   };
 
   let div2 = document.createElement("div");
-  div2.classList.add("todo");
   div2.id = `content-${i}`;
+  div2.style.flex = "1.5";
+
   let contentInput = document.createElement("input");
   contentInput.id = `content-update-${i}`;
+  contentInput.classList.add("todo");
   contentInput.value = todo.content;
   contentInput.style.fontSize = "1.3rem";
   contentInput.style.borderStyle = "none";
   contentInput.onkeydown = (event) => {
     update(event);
   };
+
   let inputHidden = document.createElement("input");
   inputHidden.type = "hidden";
   inputHidden.id = `seq`;
@@ -121,8 +124,9 @@ const check = (todo: Todo, i: number) => {
 const update = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     const element = <HTMLInputElement>event.target;
-    const nextElement = element.nextSibling;
-    const seq = (nextElement as HTMLInputElement)?.value;
+    const nextElement = <HTMLInputElement>element.nextSibling;
+    // const nextElement = element.nextSibling as HTMLInputElement; '<타입>'으로 변환과 'as 타입' 변환은 동일한 결과
+    const seq = nextElement?.value;
     const todoList = getTodoListAdapter();
     let updated = todoList.getTodo(seq);
     if (updated) {
