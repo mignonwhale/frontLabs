@@ -1,4 +1,4 @@
-import { Todo } from "./Todo.js";
+import { Todo } from "./Todo.js"; // esm 방식은 .js까지 써주기
 import { TodoList } from "./TodoList.js";
 
 const getStore = () => {
@@ -27,12 +27,21 @@ const drawLi = (todo: Todo, i: number) => {
   let div2 = document.createElement("div");
   div2.classList.add("todo");
   div2.id = `content-${i}`;
-  div2.textContent = todo.content;
-
+  let contentInput = document.createElement("input");
+  contentInput.id = `content-update-${i}`;
+  contentInput.value = todo.content;
+  contentInput.style.fontSize = "1.3rem";
+  contentInput.style.borderStyle = "none";
+  contentInput.onkeydown = (event) => {
+    update(event);
+  };
   let inputHidden = document.createElement("input");
   inputHidden.type = "hidden";
   inputHidden.id = `seq`;
   inputHidden.value = todo.seq;
+
+  div2.appendChild(contentInput);
+  div2.appendChild(inputHidden);
 
   let button = document.createElement("button");
   button.classList.add("delBtn");
@@ -49,7 +58,6 @@ const drawLi = (todo: Todo, i: number) => {
 
   li.append(div1);
   li.append(div2);
-  li.append(inputHidden);
   li.append(button);
 
   const ul = document.querySelector("ul");
@@ -109,6 +117,23 @@ const check = (todo: Todo, i: number) => {
   setStoreAdapter();
 };
 
+// 내용수정
+const update = (event: KeyboardEvent) => {
+  if (event.key === "Enter") {
+    const element = <HTMLInputElement>event.target;
+    const nextElement = element.nextSibling;
+    const seq = (nextElement as HTMLInputElement)?.value;
+    const todoList = getTodoListAdapter();
+    let updated = todoList.getTodo(seq);
+    if (updated) {
+      updated.content = element.value;
+      todoList.updateTodo(updated);
+    }
+    setStore(todoList.todos);
+    drawInit(todoList);
+  }
+};
+
 // 삭제이벤트
 const delTodo = (todo: Todo, i: number) => {
   // let button = document.querySelector(`#deleted-${i}`);
@@ -121,12 +146,19 @@ const delTodo = (todo: Todo, i: number) => {
   // 화면 반영
   drawInit(todoList);
 };
+const changeInput = (target: HTMLElement) => {
+  let contentDiv = document.createElement("input");
+  let writableInput = document.createElement("input");
+  writableInput.type = "text";
+  // writableInput.id = `update-content-${i}`;
+  contentDiv.appendChild(writableInput);
+};
 
-// 전역변수를 덜 쓰기 위한 중간자 역할
+// 전역변수를 덜 쓰기 위한 중간자 역할인데 사실 여기서는 불필요
 function setStoreAdapter() {
   setStore(todoList.todos);
 }
-// 전역변수를 덜 쓰기 위한 중간자 역할
+// 전역변수를 덜 쓰기 위한 중간자 역할인데 사실 여기서는 불필요
 function getTodoListAdapter() {
   return todoList;
 }
