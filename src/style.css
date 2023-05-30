@@ -99,6 +99,16 @@ button {
     text-align: center;
 }
 
+.content {
+    flex: 1.5
+}
+
+.content input:first-child {
+    font-size: 1.3rem;
+    border-style: none;
+}
+
+
 .todo-item.checked .checkbox{
     border: 2px solid darkgray;
     color: green;

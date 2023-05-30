@@ -26,14 +26,12 @@ const drawLi = (todo: Todo, i: number) => {
 
   let div2 = document.createElement("div");
   div2.id = `content-${i}`;
-  div2.style.flex = "1.5";
+  div2.classList.add("content");
 
   let contentInput = document.createElement("input");
   contentInput.id = `content-update-${i}`;
   contentInput.classList.add("todo");
   contentInput.value = todo.content;
-  contentInput.style.fontSize = "1.3rem";
-  contentInput.style.borderStyle = "none";
   contentInput.onkeydown = (event) => {
     update(event);
   };
