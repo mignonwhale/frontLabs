@@ -5,7 +5,6 @@ import TodoItem from './components/TodoItem.vue';
 // 조회
 const todos = ref(getStore() || [])
 
-
 // 등록
 const content = ref(null)
 
@@ -26,19 +25,19 @@ function getSeq() {
 function clear() {
     content.value = ''
 }
-
 // 체크 수정
 function updateCheck(todo) {
-    todo.checked = !checkedTodo.checked
+    todo.checked = !todo.checked
     setStore(todos.value)
 }
+
 // 내용수정
-function updateContent(event, todo) {
+function updateContent(event) {
     if (event.key === 'Enter') {
-        todo.content = event.target.value
         setStore(todos.value)
     }
 }
+
 // 삭제
 function deleteTodo(seq) {
     todos.value = todos.value.filter(e => e.seq !== seq)
@@ -67,14 +66,7 @@ function setStore(todos) {
                 <input type="text" class="todo-input" v-model="content" @keydown="registTodo" placeholder="할 일을 입력 후 엔터">
             </div>
             <ul class="todo-list">
-                <li v-for="todo in todos" :key="todo.seq" class="todo-item">
-                    <input :value="todo.seq" type="hidden">
-                    <div class="checkbox" @click="updateCheck(todo)">{{ todo.checked ? "✔" : "" }}</div>
-                    <div>
-                        <input :value="todo.content" @keydown="updateContent($event, todo)" class="todo">
-                    </div>
-                    <button @click="deleteTodo(todo.seq)" class="delBtn">x</button>
-                </li>
+                <TodoItem v-for="todo in todos" :key="todo.seq" :todo="todo" @update-check="updateCheck" @update-content="updateContent" @delete-todo="deleteTodo" />
             </ul>
         </div>
     </div>
