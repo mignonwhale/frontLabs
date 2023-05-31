@@ -1,77 +1,82 @@
 <script setup>
-import { ref } from 'vue'
-import TodoItem from './components/TodoItem.vue';
+import { ref } from "vue";
+import { Todo } from "./components/todo.js";
+import TodoItem from "./components/TodoItem.vue";
 
 // 조회
-const todos = ref(getStore() || [])
+const todos = ref(getStore() || []);
 
 // 등록
-const content = ref(null)
+const content = ref(null);
 
 function registTodo(event) {
-    if (event.key === 'Enter' && content.value != null) {
-        const todo = { checked: false, content: content.value, seq: getSeq() }
-        todos.value = [...todos.value, todo]
-        setStore(todos.value);
-        clear()
-    }
+  if (event.key === "Enter" && content.value != null) {
+    const todo = new Todo({ content: content.value });
+    todos.value = [...todos.value, todo];
+    setStore(todos.value);
+    clear();
+  }
 }
 
 function getSeq() {
-    let d = new Date();
-    return `${d.getFullYear()}${d.getMonth() + 1}${d.getDay()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}${d.getMilliseconds()}`
+  let d = new Date();
+  return `${d.getFullYear()}${
+    d.getMonth() + 1
+  }${d.getDay()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}${d.getMilliseconds()}`;
 }
 
 function clear() {
-    content.value = ''
+  content.value = "";
 }
-// 체크 수정
-function updateCheck(todo) {
-    todo.checked = !todo.checked
-    setStore(todos.value)
-}
-
-// 내용수정
-function updateContent(event) {
-    if (event.key === 'Enter') {
-        setStore(todos.value)
-    }
+// 수정
+function update() {
+  setStore(todos.value);
 }
 
 // 삭제
 function deleteTodo(seq) {
-    todos.value = todos.value.filter(e => e.seq !== seq)
-    setStore(todos.value)
+  todos.value = todos.value.filter((e) => e.seq !== seq);
+  setStore(todos.value);
 }
-
 
 // 로컬 스토리지
 function getStore() {
-    const jsonStr = localStorage.getItem('todos');
-    const todoList = JSON.parse(jsonStr)
-    return todoList;
+  const jsonStr = localStorage.getItem("todos");
+  const todoList = JSON.parse(jsonStr);
+  return todoList;
 }
 
 function setStore(todos) {
-    const jsonStr = JSON.stringify(todos)
-    localStorage.setItem('todos', jsonStr)
+  const jsonStr = JSON.stringify(todos);
+  localStorage.setItem("todos", jsonStr);
 }
 </script>
 
 <template>
-    <div class="todo-wrapper">
-        <div class="todo-title">todo app</div>
-        <div class="todo-box">
-            <div class="todo-input-box">
-                <input type="text" class="todo-input" v-model="content" @keydown="registTodo" placeholder="할 일을 입력 후 엔터">
-            </div>
-            <ul class="todo-list">
-                <TodoItem v-for="todo in todos" :key="todo.seq" :todo="todo" @update-check="updateCheck" @update-content="updateContent" @delete-todo="deleteTodo" />
-            </ul>
-        </div>
+  <div class="todo-wrapper">
+    <div class="todo-title">todo app</div>
+    <div class="todo-box">
+      <div class="todo-input-box">
+        <input
+          type="text"
+          class="todo-input"
+          v-model="content"
+          @keydown="registTodo"
+          placeholder="할 일을 입력 후 엔터"
+        />
+      </div>
+      <ul class="todo-list">
+        <template v-for="todo in todos" :key="todo.seq">
+          <TodoItem
+            :todo="todo"
+            @custom:update="update"
+            @custom:delete-todo="deleteTodo"
+          />
+        </template>
+      </ul>
     </div>
+  </div>
 </template>
 
 <style scoped>
-
 </style>
