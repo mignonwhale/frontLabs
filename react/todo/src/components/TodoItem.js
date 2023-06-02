@@ -24,7 +24,7 @@ function Check({ checked }) {
 
 export default function TodoItem({ checked, content, seq }) {
   return (
-    <li key={seq} className={checked ? 'todo-item checked' : 'todo-item'} >
+    <li className={checked ? 'todo-item checked' : 'todo-item'} >
       <Check checked={checked} />
       <Content content={content} />
       <Delete seq={seq} />

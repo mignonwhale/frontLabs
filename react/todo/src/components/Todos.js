@@ -1,26 +1,21 @@
-import TodoItem from './TodoItem'
+import TodoItem from './TodoItem';
+
 
 export default function Todos({ todos }) {
-
-
-  const todoList = todos.map(item => <TodoItem checked={item.checked} content={item.content} seq={item.seq} />
-    // <li className={item.checked ? 'todo-item checked' : 'todo-item'} key={item.seq}>
-    //   <div className="checkbox">{item.checked && '✔'}</div>
-    //   <div className="content">
-    //     <input className="todo" value={item.content} />
-    //   </div>
-    //   <button className="delBtn">x</button>
-    // </li>
-
+  const todoList = todos.map(item =>
+    <TodoItem checked={item.checked} content={item.content} seq={item.seq} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
   );
+
 
   /**
    * 반복문은 array.map()을 이용해 item을 하나씩 꺼내 세팅하는 방법을 사용한다. 
    * 
    * react-jsx-dev-runtime.development.js:87 Warning: Each child in a list should have a unique "key" prop.
    * 반복문을 사용할땐 key가 필요 
-   * 나의 문제는 <li></li>를 별도 컴포넌트로 만들고 key를 유니크한 값으로 전달했지만 계속 위 오류가 나왔음 
-   * 그래서 Todos 컴포넌트에서 다 처리하는 것으로 변경했더니 위 문제는 사라짐...
+   * 나의 문제는 <li key={seq}></li> 부분을  별도 컴포넌트로 만들고 key를 유니크한 값으로 전달했지만 계속 위 오류가 나왔음 
+   * <li>태그에 key를 넣어야 하는 것이 아닌 map() 내부의 어떠한 JSX 요소라도 거기에 key가 있어야 함. 
+   * (JSX elements directly inside a map() call always need keys!)
+   * 위 소스와 같이 map() 안에 key가 꼭 있어야 함 
    */
 
   return (
