@@ -1,25 +1,9 @@
-import './App.css';
-import './Todo.css';
-
-export default function App() {
+import TodoApp from './components/TodoApp'
+import './App.css'
+export default function App() { // 메인 컴포넌트
   return (
-    <div class="todo-wrapper">
-      <div class="todo-title">todo app</div>
-      <div class="todo-box">
-        <div class="todo-input-box">
-          <input class="todo-input" placeholder="할 일을 입력 후 엔터" />
-        </div>
-        <ul class="todo-list">
-          <li class="todo-item">
-            <div class="checkbox"></div>
-            <div class="content">
-              <input class="todo" />
-            </div>
-            <button class="delBtn">x</button>
-          </li >
-        </ul >
-      </div >
-    </div >
+    <TodoApp />
   );
 }
+
 
