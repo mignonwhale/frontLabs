@@ -14,8 +14,7 @@ export default function NewTodo() {
     }
   }
   function getSeq() {
-    let d = new Date();
-    return `${d.getFullYear()}${d.getMonth() + 1}${d.getDay()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}${d.getMilliseconds()}`;
+    return crypto.randomUUID()
   }
 
   /**
