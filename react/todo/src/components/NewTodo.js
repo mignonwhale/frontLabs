@@ -9,10 +9,11 @@ export default function NewTodo({todos, handleTodosState}) {
     if (event.key === 'Enter') {
       const newTodo = { checked: false, content: newContent, seq: getSeq() }
       // 데이터 저장
-      setStore([...todos, newTodo]);
-
+      let newTodos = [...todos, newTodo];
+      setStore(newTodos);
+      
       // 화면상태 업데이트
-      handleTodosState([...todos, newTodo]);
+      handleTodosState(newTodos);
       setNewContent('');
     }
   }

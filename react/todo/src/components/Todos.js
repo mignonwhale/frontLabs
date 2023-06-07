@@ -1,10 +1,30 @@
 import TodoItem from './TodoItem';
+import { setStore } from './store';
 
 
-export default function Todos({ todos }) {
-  const todoList = todos.map(item =>
-    <TodoItem checked={item.checked} content={item.content} seq={item.seq} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
-  );
+export default function Todos({ todos, handleTodosState }) {
+  /**
+   * props로 넘어온 todos는 이미 배열의 요소 하나하나가 반응형 상태임. 내부에서 별도로 반응형 상태로 만들 필요가 없음.
+   */
+  function update() {
+    setStore(todos)
+    handleTodosState(todos)
+  }
+  function deleteItem(targetSeq) {
+    setStore(todos.filter(e => e.seq !== targetSeq));
+    handleTodosState(todos)
+  }
+
+
+  const todoList = todos.map(item => {
+    return (
+      <TodoItem todo={item} customUpdate={update} customDelete={deleteItem} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
+    )
+  });
+
+  // const todoList = todos.map(item =>
+  //   <TodoItem checked={item.checked} content={item.content} seq={item.seq} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
+  // );
 
 
   /**

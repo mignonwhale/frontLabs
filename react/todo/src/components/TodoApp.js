@@ -9,6 +9,7 @@ export default function TodoApp() { // 메인 컴포넌트
   const [todos, setTodos] = useState(getStore() || []);
   function handleTodosState(todos) {
     setTodos(todos)
+    console.log(todos)
   }
 
   /**
@@ -22,7 +23,7 @@ export default function TodoApp() { // 메인 컴포넌트
         <div className="todo-input-box">
           <NewTodo todos={todos} handleTodosState={handleTodosState}/>
         </div>
-        <Todos todos={todos} />
+        <Todos todos={todos} handleTodosState={handleTodosState} />
       </div>
     </div>
   );
