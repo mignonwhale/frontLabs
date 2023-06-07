@@ -14,11 +14,11 @@ export default function Todos({ todos, handleTodosState }) {
    */
   function update() {
     setStore(todos)
-    handleTodosState(todos)
+    handleTodosState()
   }
   function deleteItem(targetSeq) {
     setStore(todos.filter(e => e.seq !== targetSeq));
-    handleTodosState(todos)
+    handleTodosState()
   }
 
   /**
