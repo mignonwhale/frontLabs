@@ -7,9 +7,8 @@ import { getStore } from './store.js'
 export default function TodoApp() { // 메인 컴포넌트
 
   const [todos, setTodos] = useState(getStore() || []);
-  function handleTodosState(todos) {
-    setTodos(todos)
-    console.log(todos)
+  function handleTodosState() {
+    setTodos(getStore())
   }
 
   /**
@@ -21,7 +20,7 @@ export default function TodoApp() { // 메인 컴포넌트
       <div className="todo-title">todos</div>
       <div className="todo-box">
         <div className="todo-input-box">
-          <NewTodo todos={todos} handleTodosState={handleTodosState}/>
+          <NewTodo todos={todos} handleTodosState={handleTodosState} />
         </div>
         <Todos todos={todos} handleTodosState={handleTodosState} />
       </div>

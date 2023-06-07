@@ -1,11 +1,3 @@
-import { useState } from 'react';
-
-
-
-
-
-
-
 export default function TodoItem({ todo, customUpdate, customDelete }) {
   return (
     <li className={todo.checked ? 'todo-item checked' : 'todo-item'} >
@@ -18,7 +10,7 @@ export default function TodoItem({ todo, customUpdate, customDelete }) {
 
 function Check({ todo, customUpdate }) {
 
-  const [checked, setChecked] = useState(todo.checked)
+  // const [checked, setChecked] = useState(todo.checked)
 
   function handleCheckedClick() {
     todo.checked = !todo.checked;
@@ -26,11 +18,16 @@ function Check({ todo, customUpdate }) {
     customUpdate();
 
     // 자식 컴포넌트 변경사항 적용
-    setChecked(todo.checked);
+    // setChecked(todo.checked);
+
+    /**
+     *  <div className="checkbox" onClick={handleCheckedClick}>{todo.checked && '✔'}</div> 일때 {todo.checked} 부분이 재 렌더링이 되지 않음 
+     * 렌더링이 다시 발생되는 경우가 반응형일때만 그런건가? todo는 이미 반응형인데...
+     */
 
   }
   return (
-    <div className="checkbox" onClick={handleCheckedClick}>{checked && '✔'}</div>
+    <div className="checkbox" onClick={handleCheckedClick}>{todo.checked && '✔'}</div>
   );
 }
 function Content({ todo, customUpdate }) {
