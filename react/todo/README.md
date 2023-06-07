@@ -1,6 +1,26 @@
+# node 설치
+
+[nodejs](https://nodejs.org/ko/download)
+
+# npm 설치
+
+package.json 파일 생성
+
+```
+npm init
+```
+
+패키지명을 함께 입력하면 해당 패키지만 설치, 생략할 경우, package.json 기준으로 모두 설치
+
+```
+npm install <패키지명>
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+`npx create-react-app my-app`
 
 ## Available Scripts
 

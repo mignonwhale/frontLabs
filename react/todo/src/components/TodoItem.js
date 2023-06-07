@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { setStore } from './store';
 
 function Delete({ seq }) {
   return (
@@ -16,13 +17,12 @@ function Content({ content }) {
   );
 }
 
-function Check({ checked }) {
-  return (
-    <div className="checkbox">{checked && '✔'}</div>
-  );
-}
+
+
+
 
 export default function TodoItem({ checked, content, seq }) {
+
   return (
     <li className={checked ? 'todo-item checked' : 'todo-item'} >
       <Check checked={checked} />
@@ -31,5 +31,12 @@ export default function TodoItem({ checked, content, seq }) {
     </li>
   );
 }
+
+function Check({ checked }) {
+  return (
+    <div className="checkbox"> {checked && '✔'}</div>
+  );
+}
+
 
 

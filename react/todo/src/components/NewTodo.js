@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { getStore, setStore } from './store';
+import { setStore } from './store';
 
-export default function NewTodo() {
+export default function NewTodo({todos, handleTodosState}) {
 
   const [newContent, setNewContent] = useState('');
 
   function handleNewTodoKeyDown(event) {
     if (event.key === 'Enter') {
       const newTodo = { checked: false, content: newContent, seq: getSeq() }
-      const todos = getStore() || [];
+      // 데이터 저장
       setStore([...todos, newTodo]);
+
+      // 화면상태 업데이트
+      handleTodosState([...todos, newTodo]);
       setNewContent('');
     }
   }
@@ -26,5 +29,4 @@ export default function NewTodo() {
     <input type="text" className="todo-input" placeholder="할 일을 입력 후 엔터" value={newContent} onChange={e => setNewContent(e.target.value)} onKeyDown={handleNewTodoKeyDown} />
   );
 }
-
 
