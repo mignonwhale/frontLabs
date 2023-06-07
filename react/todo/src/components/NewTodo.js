@@ -1,19 +1,15 @@
 import { useState } from 'react';
 import { setStore } from './store';
 
-export default function NewTodo({todos, handleTodosState}) {
+export default function NewTodo({ todos, handleTodosState }) {
 
   const [newContent, setNewContent] = useState('');
 
   function handleNewTodoKeyDown(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && newContent !== '') {
       const newTodo = { checked: false, content: newContent, seq: getSeq() }
-      // 데이터 저장
-      let newTodos = [...todos, newTodo];
-      setStore(newTodos);
-      
-      // 화면상태 업데이트
-      handleTodosState(newTodos);
+      setStore([...todos, newTodo]);
+      handleTodosState();
       setNewContent('');
     }
   }
