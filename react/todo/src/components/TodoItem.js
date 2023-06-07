@@ -31,17 +31,15 @@ function Check({ todo, customUpdate }) {
   );
 }
 function Content({ todo, customUpdate }) {
-  function handleContentChange(e) {
-    todo.content = e.target.value;
-  }
   function handleContentKeydown(e) {
     if (e.key === 'Enter') {
+      todo.content = e.target.value;
       customUpdate()
     }
   }
   return (
     <div className="content">
-      <input className="todo" value={todo.content} onChange={handleContentChange} onKeyDown={handleContentKeydown} />
+      <input className="todo" defaultValue={todo.content} onKeyDown={handleContentKeydown} />
     </div>
   );
 }
