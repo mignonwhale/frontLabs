@@ -1,26 +1,26 @@
-export default function TaskItem({ task, onCustomUpdate, onCustomDelete }) {
+export default function TaskItem({ checked, content, onCustomUpdate, onCustomDelete }) {
 
   // 체크박스
-  function handleClick() {
-    const newTask = { ...task, checked: !task.checked }
-    onCustomUpdate(newTask);
+  function handleClick(e) {
+    const newChecked = e.target.dataset.checked === 'true';
+    onCustomUpdate?.({ checked: !newChecked });
   }
 
+
   // 내용
-  function handleContentKeyDown(e, task) {
+  function handleContentKeyDown(e) {
     if (e.key === 'Enter') {
-      const newTask = { ...task, content: e.target.value };
-      onCustomUpdate(newTask);
+      onCustomUpdate?.({ content: e.target.value });
     }
   }
 
   return (
-    <li className={task.checked ? 'todo-item checked' : 'todo-item'} key={task.seq} >
-      <div className="checkbox" onClick={handleClick}>{task.checked && '✔'}</div>
+    <li className={checked ? 'todo-item checked' : 'todo-item'} >
+      <div className="checkbox" data-checked={checked} onClick={handleClick}>{checked && '✔'}</div>
       <div className="content">
-        <input className="todo" defaultValue={task.content} onKeyDown={e => handleContentKeyDown(e, task)} />
+        <input className="todo" defaultValue={content} onKeyDown={e => handleContentKeyDown(e)} />
       </div>
-      <button className="delBtn" onClick={onCustomDelete}>x</button>
+      <button className="delBtn" onClick={e => onCustomDelete?.()}>x</button>
     </li>
   )
 }

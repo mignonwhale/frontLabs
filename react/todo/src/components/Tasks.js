@@ -19,7 +19,10 @@ export default function Tasks() {
     }
   }
   // 업데이트
-  function update(index, newTask) {
+  function update(index, task, { checked, content }) {
+    const newChecked = checked ?? task.checked;
+    const newContent = content ?? task.content;
+    const newTask = { checked: newChecked, content: newContent, seq: task.seq }
     const newTasks = tasks.map((t, i) =>
       i === index ? newTask : t
     );
@@ -40,9 +43,17 @@ export default function Tasks() {
         <div className="todo-input-box">
           <input type="text" className="todo-input" placeholder="할 일을 입력 후 엔터" value={newContnet} onChange={e => setNewContnet(e.target.value)} onKeyDown={handleKeyDown} />
         </div>
-        {
-          tasks.map((task, index) => <TaskItem task={task} onCustomUpdate={update.bind(this, index)} onCustomDelete={deleteTask.bind(this, index)} key={task.seq} />)
-        }
+        <ul className="todo-list">
+          {
+            tasks.map((task, index) =>
+              <TaskItem
+                checked={task.checked}
+                content={task.content}
+                onCustomUpdate={update.bind(this, index, task)}
+                onCustomDelete={deleteTask.bind(this, index)}
+                key={task.seq} />)
+          }
+        </ul>
       </div>
     </div >
   );
