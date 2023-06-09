@@ -29,13 +29,19 @@ function clear() {
   content.value = "";
 }
 // 수정
-function update() {
+function update({newChecked, newContent, seq}) {
+  const newTodos = todos.value.map(ele => 
+    ele.seq === seq ? 
+    {...ele, checked: newChecked ?? ele.checked, content: newContent ?? ele.content} : 
+    ele
+  )
+  todos.value = newTodos;
   setStore(todos.value);
 }
 
 // 삭제
 function deleteTodo(seq) {
-  todos.value = todos.value.filter((e) => e.seq !== seq);
+  todos.value = todos.value.filter((ele) => ele.seq !== seq);
   setStore(todos.value);
 }
 
@@ -68,7 +74,9 @@ function setStore(todos) {
       <ul class="todo-list">
         <template v-for="todo in todos" :key="todo.seq">
           <TodoItem
-            :todo="todo"
+            :checked="todo.checked"
+            :content="todo.content"
+            :seq="todo.seq"
             @custom:update="update"
             @custom:delete-todo="deleteTodo"
           />
