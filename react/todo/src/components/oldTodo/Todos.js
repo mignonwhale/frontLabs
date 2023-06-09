@@ -1,24 +1,34 @@
+import { useState } from 'react';
 import TodoItem from './TodoItem';
 import { setStore } from './store';
 
 
-export default function Todos({ todos, handleTodosState }) {
-  const todoList = todos.map(item => {
+export default function Todos({ todosFromParent, handleTodosState }) {
+  const [todos, setTodos] = useState(todosFromParent);
+
+  const todoList = todos?.map?.((item, index) => {
+    function handleMutateItem(obj) {
+      // const clone = [...todos];
+      const clone = JSON.parse(JSON.stringify(todos));
+      clone[index] = obj;
+      setTodos(clone);
+    }
     return (
-      <TodoItem todo={item} customUpdate={update} customDelete={deleteItem} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
+      <TodoItem item={item} customUpdate={handleMutateItem} customDelete={deleteItem} key={item.seq} /> // map() 호출 안쪽에 꼭 key 추가해야함.
     )
   });
 
   /**
    * props로 넘어온 todos는 이미 배열의 요소 하나하나가 반응형 상태임. 내부에서 별도로 반응형 상태로 만들 필요가 없음.
    */
-  function update() {
-    setStore(todos)
-    handleTodosState()
-  }
+  // function update() {
+  //   handleTodosState();
+  //   setStore(todosFromParent);
+
+  // }
   function deleteItem(targetSeq) {
-    setStore(todos.filter(e => e.seq !== targetSeq));
-    handleTodosState()
+    handleTodosState();
+    setStore(todosFromParent.filter(e => e.seq !== targetSeq));
   }
 
   /**

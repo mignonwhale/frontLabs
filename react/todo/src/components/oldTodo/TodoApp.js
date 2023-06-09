@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './Todo.css';
+import './../Todo.css';
 import NewTodo from './NewTodo'
 import Todos from './Todos'
 import { getStore } from './store.js'
@@ -22,10 +22,8 @@ export default function TodoApp() { // 메인 컴포넌트
         <div className="todo-input-box">
           <NewTodo todos={todos} handleTodosState={handleTodosState} />
         </div>
-        <Todos todos={todos} handleTodosState={handleTodosState} />
+        <Todos todosFromParent={todos} handleTodosState={handleTodosState} />
       </div>
     </div>
   );
 }
-
-

@@ -1,22 +1,26 @@
-export default function TodoItem({ todo, customUpdate, customDelete }) {
+import { useState } from 'react';
+
+export default function TodoItem({ item, customUpdate, customDelete }) {
+  const [todo, setTodo] = useState(item);
   return (
-    <li className={todo.checked ? 'todo-item checked' : 'todo-item'} >
-      <Check todo={todo} customUpdate={customUpdate} />
-      <Content todo={todo} customUpdate={customUpdate} />
-      <Delete seq={todo.seq} customDelete={customDelete} />
+    <li className={todo?.checked ? 'todo-item checked' : 'todo-item'} >
+      <Check todo={todo} setTodo={setTodo} customUpdate={customUpdate} />
+      <Content todo={todo} setTodo={setTodo} customUpdate={customUpdate} />
+      <Delete seq={todo?.seq} customDelete={customDelete} />
     </li>
   );
 }
 
-function Check({ todo, customUpdate }) {
-  // const [checked, setChecked] = useState(todo.checked)
-  function handleCheckedClick() {
-    todo.checked = !todo.checked;
-    // 부모 컴포넌트에 알리기
-    customUpdate();
+function Check({ todo, setTodo, customUpdate }) {
 
-    // 자식 컴포넌트 변경사항 적용
-    // setChecked(todo.checked);
+  function handleCheckedClick() {
+    // const clone = { ...todo };
+    // clone.checked = !clone.checked;
+    // 부모 컴포넌트에 알리기
+    const qqq = { ...todo, checked: !todo.checked };
+    setTodo(qqq);
+    customUpdate(qqq);
+
     /**
      *  <div className="checkbox" onClick={handleCheckedClick}>{todo.checked && '✔'}</div> 일때 {todo.checked} 부분이 재 렌더링이 되지 않음 
      * 렌더링이 다시 발생되는 경우가 반응형일때만 그런건가? todo는 이미 반응형인데...
@@ -24,14 +28,14 @@ function Check({ todo, customUpdate }) {
      */
   }
   return (
-    <div className="checkbox" onClick={handleCheckedClick}>{todo.checked && '✔'}</div>
+    <div className="checkbox" onClick={handleCheckedClick}>{todo?.checked && '✔'}</div>
   );
 }
-function Content({ todo, customUpdate }) {
+function Content({ todo, setTodo }) {
   function handleContentKeydown(e) {
     if (e.key === 'Enter') {
-      todo.content = e.target.value;
-      customUpdate()
+      setTodo({ ...todo, content: e.target.value });
+      // customUpdate();
     }
   }
   /**
@@ -39,7 +43,7 @@ function Content({ todo, customUpdate }) {
    */
   return (
     <div className="content">
-      <input className="todo" defaultValue={todo.content} onKeyDown={handleContentKeydown} />
+      <input className="todo" defaultValue={todo?.content} onKeyDown={handleContentKeydown} />
     </div>
   );
 }
