@@ -3,14 +3,14 @@ export default function TaskItem({ checked, content, onCustomUpdate, onCustomDel
   // 체크박스
   function handleClick(e) {
     const newChecked = e.target.dataset.checked === 'true';
-    onCustomUpdate?.({ checked: !newChecked });
+    onCustomUpdate?.({ newChecked: !newChecked });
   }
 
 
   // 내용
   function handleContentKeyDown(e) {
     if (e.key === 'Enter') {
-      onCustomUpdate?.({ content: e.target.value });
+      onCustomUpdate?.({ newContent: e.target.value });
     }
   }
 

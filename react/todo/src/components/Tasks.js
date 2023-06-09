@@ -19,19 +19,16 @@ export default function Tasks() {
     }
   }
   // 업데이트
-  function update(index, task, { checked, content }) {
-    const newChecked = checked ?? task.checked;
-    const newContent = content ?? task.content;
-    const newTask = { checked: newChecked, content: newContent, seq: task.seq }
-    const newTasks = tasks.map((t, i) =>
-      i === index ? newTask : t
+  function update(seq, { newChecked, newContent }) {
+    const newTasks = tasks.map(task =>
+      task.seq === seq ? { ...task, checked: newChecked ?? task.checked, content: newContent ?? task.content } : task
     );
     setTasks(newTasks);
     setStore(newTasks);
   }
   // 삭제
-  function deleteTask(index) {
-    const newTasks = tasks.filter((t, i) => i !== index);
+  function deleteTask(seq) {
+    const newTasks = tasks.filter(t => t.seq !== seq);
     setTasks(newTasks);
     setStore(newTasks);
   }
@@ -49,8 +46,8 @@ export default function Tasks() {
               <TaskItem
                 checked={task.checked}
                 content={task.content}
-                onCustomUpdate={update.bind(this, index, task)}
-                onCustomDelete={deleteTask.bind(this, index)}
+                onCustomUpdate={update.bind(this, task.seq)}
+                onCustomDelete={deleteTask.bind(this, task.seq)}
                 key={task.seq} />)
           }
         </ul>

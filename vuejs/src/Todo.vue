@@ -31,10 +31,8 @@ function clear() {
 // 수정
 function update({newChecked, newContent, seq}) {
   const newTodos = todos.value.map(ele => 
-    ele.seq === seq ? 
-    {...ele, checked: newChecked ?? ele.checked, content: newContent ?? ele.content} : 
-    ele
-  )
+    ele.seq === seq ? {...ele, checked: newChecked ?? ele.checked, content: newContent ?? ele.content} : ele
+  );
   todos.value = newTodos;
   setStore(todos.value);
 }
