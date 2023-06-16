@@ -6,7 +6,17 @@ import TaskItem from './TaskItem';
 
 
 export default function Tasks() {
-  const [tasks, setTasks] = useState(getStore() || []);
+  /*
+  useState는 초기값은 최초 한 번만 사용하고 이후는 무시한다. 그럼에도 getStore()처럼 호출식을 초기값으로 넘기면 렌더링이 될때마다 호출이 된다. 최초를 제외하고 사용하지 않는데도 말이다. 
+  getTodoList는 호출이 아닌 함수자체를 인수로 넘기고 있다. 이럴 경우 리액트는 초기화 할때만 해당 함수를 한 번 호출한다. 
+  그러므로 아래처럼 변경하는 게 자원이 덜 소모된다. 
+  */
+  // const [tasks, setTasks] = useState(getStore() || []);
+  const [tasks, setTasks] = useState(getTodoList);
+  function getTodoList() {
+    return getStore() || [];
+  }
+
   const [newContnet, setNewContnet] = useState('');
 
   // 새 항목 추가
